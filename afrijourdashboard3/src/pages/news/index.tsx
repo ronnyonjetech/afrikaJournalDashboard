@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
+// import { ScrollArea } from '@/components/ui/scroll-area';
 import { Layout } from '@/components/custom/layout';
 import { NewsCard } from '@/components/custom/NewsCard';
 import { CategoryTabs } from '@/components/custom/CategoryTabs';
@@ -20,6 +20,15 @@ type Article = {
 const mockArticles: Article[] = [
   {
     id: 1,
+    title: "Funding Opportunity: Play Learn Thrive (Canada)",
+    summary: "We are offering Proof of Concept (POC) funding of up to $250,000 CAD for a maximum of 24 months",
+    date: "2025-04-24",
+    link: "https://www.grandchallenges.ca/funding-opportunities/",
+    category: "funding",
+    imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80"
+  },
+  {
+    id: 3,
     title: "New Research Funding Initiative for African Scholars",
     summary: "A major foundation announces $10M in research grants specifically for African journal publications and academic research projects.",
     date: "2024-01-15",
@@ -35,7 +44,7 @@ const mockArticles: Article[] = [
     link: "#",
     category: "blog",
     imageUrl: "https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&q=80"
-  },
+  }
 ];
 
 export default function NewsUpdates() {
@@ -106,7 +115,7 @@ export default function NewsUpdates() {
             </div>
           </div>
 
-          <ScrollArea className="h-[calc(100vh-28rem)]">
+          {/* <ScrollArea className="h-[calc(100vh-28rem)]"> */}
             <AnimatePresence mode="wait">
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -122,7 +131,7 @@ export default function NewsUpdates() {
                 </div>
               )}
             </AnimatePresence>
-          </ScrollArea>
+          {/* </ScrollArea> */}
         </div>
       </Layout.Body>
     </Layout>
