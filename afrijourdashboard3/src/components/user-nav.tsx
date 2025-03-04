@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useContext } from 'react'
 import AuthContext from '../AuthContext'
-
+import { FaUserSlash } from "react-icons/fa";
 export function UserNav() {
   const authContext = useContext(AuthContext)
   if (!authContext) {
@@ -40,7 +40,7 @@ export function UserNav() {
               {user && user.user_name
                 ? user.user_name.charAt(0).toUpperCase() +
                   user.user_name.charAt(1)?.toLowerCase()
-                : ''}
+                : <FaUserSlash />}
             </AvatarFallback>
           </Avatar>
         </Button>

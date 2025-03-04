@@ -80,7 +80,7 @@ export function LanguagePiechart() {
       try {
         const authTokens = getAuthTokens();
         const accessToken = authTokens?.access; // Retrieve the access token
-        const response = await fetch('https://aphrc.site/journal_api/api/user-languages/', {
+        const response = await fetch('https://backend.afrikajournals.org/journal_api/api/user-languages/', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,

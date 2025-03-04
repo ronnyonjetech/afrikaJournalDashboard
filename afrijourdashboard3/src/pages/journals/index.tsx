@@ -15,6 +15,7 @@ import { ArticleCard } from '@/components/articles/ArticleCard'
 // import { FilterPanel } from '@/components/filters/FilterPanel';
 import { Loader2 } from 'lucide-react'
 import NotFoundPage from './components/NotFoundPage'
+import { ScrollArea } from '@/components/ui/scroll-area'
 interface Article {
   title: string
   authors: string
@@ -61,13 +62,13 @@ export default function Journals() {
   const [viewMorelanguages, setViewMoreLanguages] = useState(false)
   const [filteredQuery, setFilteredQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
+  // const [results, setResults] = useState(0)
   const fetchArticles = async (page = 1, customUrl?: string) => {
     setIsLoading(true) // Start loading
     try {
       const url =
         customUrl ||
-        `https://aphrc.site/journal_api/articles/search/?query=${searchTerm}&page=${page}&page_size=${pageSize}`
+        `https://backend.afrikajournals.org/journal_api/articles/search/?query=${searchTerm}&page=${page}&page_size=${pageSize}`
 
       console.log('Fetching articles from URL:', url) // Log the URL being requested
 
@@ -79,7 +80,7 @@ export default function Journals() {
       }
 
       const data = await response.json()
-
+      console.log('data', data.count)
       // Ensure data has expected structure
       if (data && data.results) {
         setArticles(
@@ -91,7 +92,51 @@ export default function Journals() {
           }))
         )
         setTotalPages(Math.ceil(data.count / pageSize))
+        // setResults(data.count)
       } else {
+        // setResults(0)
+        throw new Error('Invalid data structure received from API')
+      }
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+    } finally {
+      setIsLoading(false) // Stop loading
+    }
+  }
+
+
+  const fetchArticles1 = async (page = 1, customUrl?: string) => {
+    setIsLoading(true) // Start loading
+    try {
+      const url =
+        customUrl ||
+        `https://backend.afrikajournals.org/journal_api/articles/search/?&page=${page}&page_size=${pageSize}`
+
+      console.log('Fetching articles from URL:', url) // Log the URL being requested
+
+      const response = await fetch(url)
+
+      // Check if response is OK (status 200-299)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch articles: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      console.log('data', data.count)
+      // Ensure data has expected structure
+      if (data && data.results) {
+        setArticles(
+          data.results.map((article: any) => ({
+            ...article,
+            abstract:
+              article.abstract ||
+              'Abstract not available. This is a placeholder text that would normally contain 2-3 sentences describing the main points of the research article.',
+          }))
+        )
+        setTotalPages(Math.ceil(data.count / pageSize))
+        // setResults(data.count)
+      } else {
+        // setResults(0)
         throw new Error('Invalid data structure received from API')
       }
     } catch (error) {
@@ -104,9 +149,9 @@ export default function Journals() {
   const fetchFiltersData = async () => {
     try {
       const [countriesRes, thematicRes, languagesRes] = await Promise.all([
-        fetch('https://aphrc.site/journal_api/api/country/'),
-        fetch('https://aphrc.site/journal_api/api/thematic/'),
-        fetch('https://aphrc.site/journal_api/api/languages/'),
+        fetch('https://backend.afrikajournals.org/journal_api/api/country/'),
+        fetch('https://backend.afrikajournals.org/journal_api/api/thematic/'),
+        fetch('https://backend.afrikajournals.org/journal_api/api/languages/'),
       ])
 
       setCountries(await countriesRes.json())
@@ -134,8 +179,8 @@ export default function Journals() {
     setCurrentPage(page)
 
     const url = filteredQuery
-      ? `https://aphrc.site/journal_api/articles/search/?query=${filteredQuery}&page=${page}&page_size=${pageSize}`
-      : `https://aphrc.site/journal_api/articles/search/?query=${searchTerm}&page=${page}&page_size=${pageSize}`
+      ? `https://backend.afrikajournals.org/journal_api/articles/search/?query=${filteredQuery}&page=${page}&page_size=${pageSize}`
+      : `https://backend.afrikajournals.org/journal_api/articles/search/?query=${searchTerm}&page=${page}&page_size=${pageSize}`
 
     fetchArticles(page, url)
   }
@@ -189,7 +234,7 @@ export default function Journals() {
     setFilteredQuery(dynamicQuery)
     setShowFilterForm(false)
 
-    const dynamicUrl = `https://aphrc.site/journal_api/articles/search/?query=${dynamicQuery}`
+    const dynamicUrl = `https://backend.afrikajournals.org/journal_api/articles/search/?query=${dynamicQuery}`
     fetchArticles(1, dynamicUrl) // Pass the dynamic URL for the first page
   }
 
@@ -209,14 +254,19 @@ export default function Journals() {
               <div className='absolute inset-y-0 right-0 flex items-center space-x-3 pr-3'>
                 <IconRefresh
                   className='h-5 w-5 cursor-pointer text-muted-foreground hover:text-primary'
-                  onClick={() => fetchArticles(currentPage)}
+                  onClick={() => {
+                    setSearchTerm('')
+                    setSelectedCountries([])
+                    setSelectedThematicAreas([])
+                    setSelectedLanguages([])
+                    setFilteredQuery('')
+                    setShowFilterForm(false)
+                    setCurrentPage(1)
+                    fetchArticles1(currentPage)
+                  }}
                 />
                 <IconFilter
                   className='h-5 w-5 cursor-pointer text-muted-foreground hover:text-primary'
-                  // onClick={(e) => {
-                  //   e.stopPropagation();
-                  //   setShowFilterForm((prev) => !prev);
-                  // }}
                   onClick={() => setShowFilterForm((prev) => !prev)}
                 />
                 <IconSearch
@@ -226,6 +276,9 @@ export default function Journals() {
               </div>
             </div>
           </div>
+          {/* <h1 className='mb-4 text-2xl font-bold text-primary'>
+            {results} Articles
+          </h1> */}
 
           {showFilterForm && (
             <div className='w-70 max-w-70 box-sizing: border-box fixed left-0 top-0 z-50 h-full overflow-x-auto overflow-y-auto bg-white p-4 shadow-lg'>
@@ -348,121 +401,118 @@ export default function Journals() {
               </div>
               {/* bg-[#BFEFFF] */}
               <button
-                className='mt-6 w-full rounded-lg bg-primary py-2 text-white'
+                className='mt-6 w-full rounded-lg bg-[#466785] py-2 text-white'
                 onClick={handleApplyFilters} // Call the dynamic URL builder and fetcher
               >
                 Apply Filters
               </button>
             </div>
           )}
-
-          {isLoading ? (
-            <div className='text-center'>
-              <div className='flex h-40 items-center justify-center'>
+          <ScrollArea className='flex h-[800px] items-center justify-center overflow-hidden rounded-2xl border bg-white p-4 shadow-lg'>
+            {isLoading ? (
+              <div className='flex h-full w-full items-center justify-center'>
                 <Loader2 className='h-8 w-8 animate-spin text-primary' />
               </div>
-            </div>
-          ) : (
-            <>
-              <div className='space-y-6'>
-                {articles.length > 0 ? (
-                  articles.map((article, index) => (
-                    <ArticleCard key={index} article={article} />
-                  ))
-                ) : (
-                  <div className=' flex  items-center justify-center'>
-                    <NotFoundPage />
-                  </div>
-                )}
-              </div>
-
-              {articles.length > 0 && (
-                <div className='mt-6'>
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          href='#'
-                          onClick={(e) => {
-                            e.preventDefault()
-                            if (currentPage > 1)
-                              handlePageChange(currentPage - 1)
-                          }}
-                          aria-disabled={currentPage <= 1}
-                        />
-                      </PaginationItem>
-                      {currentPage > 3 && (
-                        <>
-                          <PaginationItem>
-                            <PaginationLink
-                              href='#'
-                              isActive={currentPage === 1}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                handlePageChange(1)
-                              }}
-                            >
-                              1
-                            </PaginationLink>
-                          </PaginationItem>
-                          <PaginationEllipsis />
-                        </>
-                      )}
-                      {[...Array(totalPages)]
-                        .map((_, index) => index + 1)
-                        .filter(
-                          (page) =>
-                            page === 1 ||
-                            page === totalPages ||
-                            (page >= currentPage - 2 && page <= currentPage + 2)
-                        )
-                        .map((page) => (
-                          <PaginationItem key={page}>
-                            <PaginationLink
-                              href='#'
-                              isActive={currentPage === page}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                handlePageChange(page)
-                              }}
-                            >
-                              {page}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-                      {currentPage < totalPages - 2 && (
-                        <>
-                          <PaginationEllipsis />
-                          <PaginationItem>
-                            <PaginationLink
-                              href='#'
-                              isActive={currentPage === totalPages}
-                              onClick={(e) => {
-                                e.preventDefault()
-                                handlePageChange(totalPages)
-                              }}
-                            >
-                              {totalPages}
-                            </PaginationLink>
-                          </PaginationItem>
-                        </>
-                      )}
-                      <PaginationItem>
-                        <PaginationNext
-                          href='#'
-                          onClick={(e) => {
-                            e.preventDefault()
-                            if (currentPage < totalPages)
-                              handlePageChange(currentPage + 1)
-                          }}
-                          aria-disabled={currentPage >= totalPages}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
+            ) : (
+              <>
+                <div className='space-y-6'>
+                  {articles.length > 0 ? (
+                    articles.map((article, index) => (
+                      <ArticleCard key={index} article={article} />
+                    ))
+                  ) : (
+                    <div className=' flex  items-center justify-center'>
+                      <NotFoundPage />
+                    </div>
+                  )}
                 </div>
-              )}
-            </>
+              </>
+            )}
+          </ScrollArea>
+          {articles.length > 0 && (
+            <div className='mt-6'>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href='#'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (currentPage > 1) handlePageChange(currentPage - 1)
+                      }}
+                      aria-disabled={currentPage <= 1}
+                    />
+                  </PaginationItem>
+                  {currentPage > 3 && (
+                    <>
+                      <PaginationItem>
+                        <PaginationLink
+                          href='#'
+                          isActive={currentPage === 1}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handlePageChange(1)
+                          }}
+                        >
+                          1
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationEllipsis />
+                    </>
+                  )}
+                  {[...Array(totalPages)]
+                    .map((_, index) => index + 1)
+                    .filter(
+                      (page) =>
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 2 && page <= currentPage + 2)
+                    )
+                    .map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href='#'
+                          isActive={currentPage === page}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handlePageChange(page)
+                          }}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                  {currentPage < totalPages - 2 && (
+                    <>
+                      <PaginationEllipsis />
+                      <PaginationItem>
+                        <PaginationLink
+                          href='#'
+                          isActive={currentPage === totalPages}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handlePageChange(totalPages)
+                          }}
+                        >
+                          {totalPages}
+                        </PaginationLink>
+                      </PaginationItem>
+                    </>
+                  )}
+                  <PaginationItem>
+                    <PaginationNext
+                      href='#'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        if (currentPage < totalPages)
+                          handlePageChange(currentPage + 1)
+                      }}
+                      aria-disabled={currentPage >= totalPages}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           )}
         </div>
       </Layout.Body>

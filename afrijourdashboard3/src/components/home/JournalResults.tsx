@@ -5,13 +5,14 @@ import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Link } from 'react-router-dom'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
+import { FiRefreshCw } from 'react-icons/fi'
 interface JournalResultsProps {
   journals: any[]
   loading: boolean
   currentPage: number
   totalPages: number
   totalResults: number
+  onRefresh: () => void // Added prop for handling refresh logic
   onPageChange: (page: number) => void
 }
 
@@ -22,14 +23,26 @@ export function JournalResults({
   totalPages,
   totalResults,
   onPageChange,
+  onRefresh,
 }: JournalResultsProps) {
   return (
-    <section className='bg-muted/30 px-6 py-12'>
+    <section className='bg-muted/30 px-6 py-12 '>
       <div className='mx-auto max-w-6xl'>
         <div className='mb-8 flex items-center justify-between'>
-          <p className='text-lg font-medium'>
+          {/* <p className='text-lg font-medium'>
             {totalResults.toLocaleString()} results found
-          </p>
+          </p>{' '}
+          <FiRefreshCw className='cursor-pointer text-xl' /> */}
+          {/* Results and Refresh Icon Grouped */}
+          <div className='flex items-center gap-x-4'>
+            <p className='text-lg font-medium'>
+              {totalResults.toLocaleString()} results found
+            </p>
+            <FiRefreshCw
+              className='cursor-pointer text-xl'
+              onClick={onRefresh}
+            />
+          </div>
           <div className='flex items-center gap-2'>
             <Button
               variant='outline'
@@ -73,7 +86,7 @@ export function JournalResults({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <Card className='overflow-hidden transition-all hover:shadow-lg bg-[#BFEFFF]'>
+                    <Card className='overflow-hidden bg-[#e3effa] transition-all hover:shadow-lg'>
                       <CardContent className='p-6'>
                         <div className='mb-4 flex items-start justify-between gap-4 '>
                           <div>
@@ -89,7 +102,7 @@ export function JournalResults({
                             </p>
                           </div>
                           <div className='flex flex-wrap gap-2'>
-                            <Badge className='bg[#b5a343] text-white hover:bg[#e0c73d]'>
+                            <Badge className='bg[#b5a343] hover:bg[#e0c73d] text-white'>
                               {journal.language?.language ||
                                 'Language unspecified'}
                             </Badge>

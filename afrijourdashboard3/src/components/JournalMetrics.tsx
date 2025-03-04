@@ -17,7 +17,7 @@ const MetricItem = ({ label, value, description, icon: Icon }: MetricItemProps) 
   );
 
   return (
-    <div className="bg-[#BFEFFF] rounded-xl p-6 shadow-lg transition-all hover:shadow-xl">
+    <div className="bg-[#e3effa] rounded-xl p-6 shadow-lg transition-all hover:shadow-xl">
       <div className="flex items-start gap-4">
         <div className="rounded-full bg-white p-3 shadow-md">
           <Icon className="w-6 h-6 text-blue-600" />

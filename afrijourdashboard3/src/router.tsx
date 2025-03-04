@@ -134,6 +134,12 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'upload/:uploadId',
+        lazy: async () => ({
+          Component: (await import('./pages/uploadDetail/index')).default,
+        }),
+      },
+      {
         path: 'indexes',
         lazy: async () => ({
           Component: (await import('./pages/indexes')).default,

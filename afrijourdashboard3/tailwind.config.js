@@ -8,6 +8,7 @@ export default {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+   
   ],
   prefix: "",
   theme: {
@@ -78,4 +79,6 @@ export default {
     },
   },
   plugins: [tailwindcssAnimate],
+  plugins: [require('tailwind-scrollbar')],
+ 
 };
