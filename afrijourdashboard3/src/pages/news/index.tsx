@@ -235,7 +235,7 @@ export default function NewsUpdates() {
     const fetchFundingData = async () => {
       setIsLoading(true)
       try {
-        const response = await fetch('https://aphrc.site/funding/api/')
+        const response = await fetch('https://backend.afrikajournals.org/funding/api/')
         const data = await response.json()
         setFundingData(data)
       } catch (error) {

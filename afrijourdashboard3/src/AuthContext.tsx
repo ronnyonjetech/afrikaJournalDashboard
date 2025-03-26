@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
 
         try {
-            const response = await fetch('https://aphrc.site/api/token/refresh/', {
+            const response = await fetch('https://backend.afrikajournals.org/api/token/refresh/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const loginUser = async (email: string, password: string) => {
         try {
-            const response = await fetch('https://aphrc.site/api/token/', {
+            const response = await fetch('https://backend.afrikajournals.org/api/token/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const registerUser = async (email: string, user_name: string, password: string) => {
         try {
-            const response = await fetch('https://aphrc.site/api/register/', {
+            const response = await fetch('https://backend.afrikajournals.org/api/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const resetPassword = async (email: string) => {
         try {
-            const response = await fetch('https://aphrc.site/api/reset_password/', {
+            const response = await fetch('https://backend.afrikajournals.org/api/reset_password/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

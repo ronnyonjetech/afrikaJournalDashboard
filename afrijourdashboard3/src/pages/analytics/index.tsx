@@ -26,7 +26,7 @@ export default function Analytics() {
     scopus: false
   })
 
-  const fetchJournals = async (url = 'https://aphrc.site/journal_api/journals/search/') => {
+  const fetchJournals = async (url = 'https://backend.afrikajournals.org/journal_api/journals/search/') => {
     try {
       const response = await fetch(url)
       const data = await response.json()
@@ -45,7 +45,7 @@ export default function Analytics() {
   }
 
   const generateSearchUrl = () => {
-    const baseUrl = 'https://aphrc.site/journal_api/journals/search/'
+    const baseUrl = 'https://backend.afrikajournals.org/journal_api/journals/search/'
     const params = new URLSearchParams()
 
     Object.entries(filters).forEach(([key, value]) => {
@@ -98,19 +98,19 @@ export default function Analytics() {
             stats={[
               {
                 title: "Total Journals",
-                value: journals.length,
+                value: 2004,
                 icon: BookOpen,
                 trend: "+12.5%"
               },
               {
                 title: "Academic Fields",
-                value: "24",
+                value: "377",
                 icon: GraduationCap,
                 trend: "+4.3%"
               },
               {
                 title: "Countries",
-                value: "38",
+                value: "41",
                 icon: Globe2,
                 trend: "+2.1%"
               },

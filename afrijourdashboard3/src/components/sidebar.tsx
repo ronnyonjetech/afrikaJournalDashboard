@@ -48,7 +48,7 @@ export default function Sidebar({
         {/* Header */}
         <Layout.Header className="z-50 flex justify-between px-4 py-3 shadow-sm md:px-4">
           <a
-            href="https://afrijour-landing-page.web.app/"
+            href="https://afrikajournals.org/"
             className={`flex items-center ${!isCollapsed ? 'gap-4' : ''}`}
           >
             {/* <img

@@ -12,7 +12,7 @@ export const AuthProvider=({children})=>{
 
     let loginUser = async (email, password) => {
         try {
-            let response = await fetch('https://aphrc.site/api/token/', {
+            let response = await fetch('https://backend.afrikajournals.org/api/token/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -21,7 +21,7 @@ export default function JournalTable() {
   const [issn,setIssn]=useState(0);
   // Fetch journals with search and pagination
   const fetchJournalsStats = async () => {
-    const response = await fetch(`https://aphrc.site/journal_api/journal_stats/`);
+    const response = await fetch(`https://backend.afrikajournals.org/journal_api/journal_stats/`);
     const data = await response.json();
     console.log(data); 
     setOpenAccessJournal(data.open_access_journal_count);

@@ -4,11 +4,11 @@ import { StatsCard } from "@/components/stats-card";
 export function StatsGrid() {
   const stats = [
     { title: "Journals", value: "2,004", icon: Book, color: "bg-blue-500" },
-    { title: "African Countries", value: "54", icon: Globe, color: "bg-green-500" },
-    { title: "Abstracts", value: "1.45K", icon: FileText, color: "bg-purple-500" },
-    { title: "Languages", value: "5", icon: Languages, color: "bg-orange-500" },
-    { title: "Repositories", value: "3", icon: Database, color: "bg-pink-500" },
-    { title: "Indexes", value: "7", icon: ListFilter, color: "bg-indigo-500" },
+    { title: "African Countries", value: "41", icon: Globe, color: "bg-green-500" },
+    { title: "Abstracts", value: "11K", icon: FileText, color: "bg-purple-500" },
+    { title: "Languages", value: "64", icon: Languages, color: "bg-orange-500" },
+    { title: "Repositories", value: "103", icon: Database, color: "bg-pink-500" },
+    { title: "Indexes", value: "100", icon: ListFilter, color: "bg-indigo-500" },
     { title: "Reviewers", value: "433", icon: Users, color: "bg-teal-500" },
   ];
 

@@ -107,7 +107,7 @@ export default function AnalyticsForm({ onCriteriaChange }: AnalyticsFormProps) 
     const fetchCountries = async () => {
       try {
         const response = await fetch(
-          'https://aphrc.site/journal_api/api/country/'
+          'https://backend.afrikajournals.org/journal_api/api/country/'
         )
         const data = await response.json()
         setCountries(data)
@@ -123,7 +123,7 @@ export default function AnalyticsForm({ onCriteriaChange }: AnalyticsFormProps) 
     const fetchThematicAreas = async () => {
       try {
         const response = await fetch(
-          'https://aphrc.site/journal_api/api/thematic/'
+          'https://backend.afrikajournals.org/journal_api/api/thematic/'
         )
         const data = await response.json()
         setThematicAreas(data)
@@ -139,7 +139,7 @@ export default function AnalyticsForm({ onCriteriaChange }: AnalyticsFormProps) 
     const fetchLanguages = async () => {
       try {
         const response = await fetch(
-          'https://aphrc.site/journal_api/api/languages/'
+          'https://backend.afrikajournals.org/journal_api/api/languages/'
         )
         const data = await response.json()
         setLanguages(data)
