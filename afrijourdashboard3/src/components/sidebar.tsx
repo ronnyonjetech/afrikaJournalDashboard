@@ -58,6 +58,7 @@ export default function Sidebar({
             /> */}
              <img
               src="/images/logo.svg"
+              // src="/logo.png"
               alt="Afrijour Logo"
               className="h-12 md:h-16 lg:h-20 object-contain cursor-pointer hover:scale-105 transition-transform"
             />

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/chart';
 import { ChartLegend } from '../../../components/ui/chart';
 import { AiOutlineInbox } from 'react-icons/ai'; // Example of a "no data" icon from react-icons
-
+import { BASE_URL } from '../../../config';
 // Define types for your chart data
 interface LanguageData {
   language: string;
@@ -80,7 +80,7 @@ export function LanguagePiechart() {
       try {
         const authTokens = getAuthTokens();
         const accessToken = authTokens?.access; // Retrieve the access token
-        const response = await fetch('https://backend.afrikajournals.org/journal_api/api/user-languages/', {
+        const response = await fetch(`${BASE_URL}/journal_api/api/user-languages/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${accessToken}`,

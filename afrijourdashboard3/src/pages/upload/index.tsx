@@ -17,21 +17,21 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BookOpen, Newspaper, Award } from 'lucide-react'
 import { RadialChart } from './components/radial-chart'
 import AuthContext from '../../AuthContext'
-
+import { BASE_URL } from '../../config';
 interface Platform {
-  id: string // or number, depending on your API response
+  id: string 
   platform: string
 }
 interface Country {
-  id: string // or number, based on your API response
+  id: string 
   country: string
 }
 interface Language {
-  id: string // or number, based on your API response
+  id: string 
   language: string
 }
 interface ThematicArea {
-  id: string // or number, based on your API response
+  id: string 
   thematic_area: string
 }
 
@@ -41,24 +41,17 @@ export default function Upload() {
   if (!authContext) {
     return <div> Loading...</div>
   }
-  // Now it's safe to access loginUser method from authContext
+  
   const { user, updateTokensIfNeeded } = authContext
-  console.log(user)
-  // useEffect(() => {
-  //   ;(async () => {
-  //     await updateTokensIfNeeded()
-  //     // setLoading(false);
-  //     console.log('Checking please wait')
-  //   })()
-  // }, [])
+  console.log("user-",user.approved)
+  
 
   useEffect(() => {
     const checkTokens = async () => {
       try {
         console.log('Checking please wait');
         await updateTokensIfNeeded();
-        // Uncomment if loading state is needed
-        // setLoading(false);
+        
       } catch (error) {
         console.error('Error updating tokens:', error);
       }
@@ -71,11 +64,11 @@ export default function Upload() {
   useEffect(() => {
     const authTokens = localStorage.getItem('authTokens')
 
-    // If authTokens are missing, redirect to the sign-in page
+   
     if (!authTokens) {
-      window.location.href = '/sign-in' // Using React Router's navigation
+      window.location.href = '/sign-in' 
     }
-  }) // Run this effect when the component mounts
+  }) 
 
   const [formData, setFormData] = useState({
     journal_title: '',
@@ -106,62 +99,49 @@ export default function Upload() {
     user: '',
     // Add other fields here...
   }
-  // const [isFormVisible, setIsFormVisible] = useState(false) // State to control form visibility
-  //const [platforms, setPlatforms] = useState([]);  // To store platform options
+  
   const [platforms, setPlatforms] = useState<Platform[]>([])
-  //const [countries, setCountries] = useState([]);  // To store country options
+ 
   const [countries, setCountries] = useState<Country[]>([])
-  // const [languages,setLanguages]=useState([])
+  
   const [languages, setLanguages] = useState<Language[]>([])
 
-  // const[thematic,setThematic]=useState([])
+ 
   const [thematic, setThematic] = useState<ThematicArea[]>([])
-  // Empty dependency array ensures it runs once when the component mounts
-  //http://127.0.0.1:8000/journal_api/api/languages/
-  //https://backend.afrikajournals.org/journal_api/api/languages/
+  
   useEffect(() => {
-    fetch('https://backend.afrikajournals.org/journal_api/api/languages/')
+    fetch(`${BASE_URL}/journal_api/api/languages/`)
       .then((response) => response.json())
       .then((data) => setLanguages(data))
       .catch((error) => console.error('Error fetching languages:', error))
   }, [])
 
-  // useEffect(() => {
-  //   console.log('Updated languages:', languages) // This will log whenever languages state updates
-  // }, [languages])
+  
 
   useEffect(() => {
-    fetch('https://backend.afrikajournals.org/journal_api/api/country/')
+    fetch(`${BASE_URL}/journal_api/api/country/`)
       .then((response) => response.json())
       .then((data) => setCountries(data))
       .catch((error) => console.error('Error fetching languages:', error))
   }, [])
 
-  // useEffect(() => {
-  //   console.log('Updated countries:', countries) // This will log whenever countries state updates
-  // }, [countries])
-
+  
   useEffect(() => {
-    fetch('https://backend.afrikajournals.org/journal_api/api/platform/')
+    fetch(`${BASE_URL}/journal_api/api/platform/`)
       .then((response) => response.json())
       .then((data) => setPlatforms(data))
       .catch((error) => console.error('Error fetching languages:', error))
   }, [])
 
-  // useEffect(() => {
-  //   console.log('Updated platforms:', platforms) // This will log whenever countries state updates
-  // }, [platforms])
-
+  
   useEffect(() => {
-    fetch('https://backend.afrikajournals.org/journal_api/api/thematic/')
+    fetch(`${BASE_URL}/journal_api/api/thematic/`)
       .then((response) => response.json())
       .then((data) => setThematic(data))
       .catch((error) => console.error('Error fetching languages:', error))
   }, [])
 
-  // useEffect(() => {
-  //   console.log('Updated Thematic:', thematic) // This will log whenever countries state updates
-  // }, [thematic])
+  
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -179,14 +159,12 @@ export default function Upload() {
       [name]: newValue,
     })
   }
-  //https://backend.afrikajournals.org/
-  //http://127.0.0.1:8000/journal_api/api/journalcreate/
-  //https://backend.afrikajournals.org/journal_api/api/journalcreate/
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
       const response = await fetch(
-        'https://backend.afrikajournals.org/journal_api/api/journalcreate/',
+        `${BASE_URL}/journal_api/api/journalcreate/`,
         {
           method: 'POST',
           headers: {
@@ -210,9 +188,7 @@ export default function Upload() {
     }
   }
 
-  // const toggleFormVisibility = () => {
-  //   setIsFormVisible(!isFormVisible) // Toggle the form visibility
-  // }
+  
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -251,25 +227,7 @@ export default function Upload() {
         return (
           <div>
             <h2 className='mb-4 text-xl font-semibold'>Add a New Journal</h2>
-            {/* <form className="bg-white p-6 rounded-lg shadow-md">
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Journal Title
-                </label>
-                <input
-                  type="text"
-                  name="journal_title"
-                  className="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                Add Journal
-              </button>
-            </form> */}
-
+           
             <form
               onSubmit={handleSubmit}
               className='mx-auto mt-8 rounded-lg bg-white p-10 shadow-xl'
