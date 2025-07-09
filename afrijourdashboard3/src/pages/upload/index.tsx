@@ -42,23 +42,41 @@ export default function Upload() {
     return <div> Loading...</div>
   }
   
-  const { user, updateTokensIfNeeded } = authContext
-  console.log("user-",user.approved)
+  const { user,refreshToken } = authContext
+  console.log("user-",user)
+  
   
 
-  useEffect(() => {
-    const checkTokens = async () => {
-      try {
-        console.log('Checking please wait');
-        await updateTokensIfNeeded();
+  // const handleRefresh = async () => {
+  //   if (user?.refreshToken) {
+  //     const result = await user.refreshToken()
+  //     console.log('Refreshed token result:', result)
+  //   }
+  // }
+
+  const handleRefresh = async () => {
+  try {
+    const result = await refreshToken()
+    console.log('Refreshed token result:', result)
+    alert('Token refreshed successfully')
+  } catch (error) {
+    console.error('Failed to refresh token:', error)
+    alert('Failed to refresh token')
+  }
+}
+  // useEffect(() => {
+  //   const checkTokens = async () => {
+  //     try {
+  //       console.log('Checking please wait');
+       
         
-      } catch (error) {
-        console.error('Error updating tokens:', error);
-      }
-    };
+  //     } catch (error) {
+  //       console.error('Error updating tokens:', error);
+  //     }
+  //   };
   
-    checkTokens();
-  }, []);
+  //   checkTokens();
+  // }, []);
   
 
   useEffect(() => {
@@ -475,6 +493,9 @@ export default function Upload() {
 
           <div className='mt-6'>{renderTabContent()}</div>
         </div>
+        <h1>Welcome Back</h1>
+        <button onClick={handleRefresh}>Test Refresh Token</button>
+
       </Layout.Body>
     </Layout>
   )

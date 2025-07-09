@@ -11,7 +11,8 @@ interface AuthContextType {
     password: string
   ) => Promise<void>
   resetPassword: (email: string) => Promise<void>
-  updateTokensIfNeeded: () => void
+  // updateTokensIfNeeded: () => void
+  refreshToken: () => Promise<any>
 }
 
 interface AuthProviderProps {
@@ -35,59 +36,52 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   )
   const [loading, setLoading] = useState(true)
 
-  const isTokenExpired = (token: string): boolean => {
-    try {
-      const decoded: { exp: number } = jwtDecode(token)
-      const currentTime = Math.floor(Date.now() / 1000)
-      console.log('decoded token', decoded)
-      console.log('token', token)
-      return decoded.exp < currentTime
-    } catch (error) {
-      console.error('Invalid token:', error)
-      return true
-    }
-  }
-
   const refreshToken = async (): Promise<{
     access: string
     refresh: string
   } | null> => {
-    if (!authTokens?.refresh) {
-      console.error('No refresh token available')
+    const storedTokens = localStorage.getItem('authTokens')
+
+    if (!storedTokens) {
+      console.error('No tokens found in localStorage')
+      return null
+    }
+
+    const parsedTokens = JSON.parse(storedTokens)
+    const refresh = parsedTokens?.refresh
+
+    if (!refresh) {
+      console.error('No refresh token found in stored tokens')
       return null
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/token/refresh/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refresh: authTokens.refresh }),
-      })
+      const response = await fetch(
+        'https://backend.afrikajournals.org/api/token/refresh',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ refresh }),
+        }
+      )
 
       if (response.ok) {
         const data = await response.json()
-        setAuthTokens(data)
-        setUser(jwtDecode(data.access))
-        localStorage.setItem('authTokens', JSON.stringify(data))
+        console.log('✅ Old tokens:', storedTokens)
+        console.log('✅ New tokens:', data)
+
+        localStorage.setItem('authTokens', JSON.stringify(data)) // Optional: update stored tokens
         return data
       } else {
-        console.error('Failed to refresh token:', await response.json())
+        const errorData = await response.json()
+        console.error('❌ Failed to refresh token:', errorData)
         return null
       }
     } catch (error) {
-      console.error('Error refreshing token:', error)
+      console.error('❌ Error refreshing token:', error)
       return null
-    }
-  }
-
-  const updateTokensIfNeeded = async (): Promise<void> => {
-    if (!authTokens || isTokenExpired(authTokens.access)) {
-      const newTokens = await refreshToken()
-      if (!newTokens) {
-        logoutUser()
-      }
     }
   }
 
@@ -170,21 +164,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     window.location.href = '/sign-in' // Redirect to sign-in on logout
   }
 
-  // useEffect(() => {
-  //     (async () => {
-  //         await updateTokensIfNeeded();
-  //         setLoading(false);
-  //         console.log("Checking");
-  //     })();
-  // }, []);
-
   const contextData: AuthContextType = {
     user,
     loginUser,
     logoutUser,
     registerUser,
     resetPassword,
-    updateTokensIfNeeded,
+    refreshToken,
   }
 
   return (

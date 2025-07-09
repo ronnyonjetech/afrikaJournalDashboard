@@ -254,55 +254,7 @@ const Journals: React.FC = () => {
   }, [])
 
   return (
-    // <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2'>
-    //   {journals.map((journal) => (
-    //     <Card
-    //       key={journal.id}
-    //       className='transition-all hover:scale-105 relative p-4 rounded-xl border shadow'
-    //     >
-    //       {/* Action Buttons */}
-    //       <div className='absolute right-3 top-3 flex space-x-2'>
-    //         <Link to={`/upload/${journal.id}`}>
-    //           <button
-    //             type='button'
-    //             className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500'
-    //           >
-    //             <FaPen className='h-4 w-4 text-yellow-500' />
-    //           </button>
-    //         </Link>
-    //         <button
-    //           type='button'
-    //           onClick={() => handleDelete(journal.id)}
-    //           className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500'
-    //         >
-    //           <FaTrash className='h-4 w-4 text-red-500' />
-    //         </button>
-    //       </div>
-
-    //       {/* Journal Info */}
-    //       <CardHeader className='text-center space-y-1'>
-    //         <CardTitle className='text-sm font-medium truncate'>
-    //           {journal.journal_title}
-    //         </CardTitle>
-    //         <CardDescription className='text-xs text-gray-500'>
-    //           Language:{' '}
-    //           {journal.language ? journal.language.language : 'Not specified'}
-    //         </CardDescription>
-    //       </CardHeader>
-
-    //       <CardContent className='mt-2 text-sm text-center text-gray-600'>
-    //         <p>
-    //           <strong>Thematic Area:</strong>{' '}
-    //           {journal.thematic_area?.thematic_area || 'Not specified'}
-    //         </p>
-    //         <p>
-    //           <strong>Publisher:</strong>{' '}
-    //           {journal.publishers_name || 'Not specified'}
-    //         </p>
-    //       </CardContent>
-    //     </Card>
-    //   ))}
-    // </div>
+   
     <div className='grid gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
       {journals.map((journal) => (
         <Card

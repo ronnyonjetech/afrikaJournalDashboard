@@ -134,6 +134,42 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: 'journal_update/',
+        lazy: async () => ({
+          Component: (await import('./pages/journalUpdate')).default,
+        }),
+      },
+       {
+        path: 'journal_list/',
+        lazy: async () => ({
+          Component: (await import('./pages/journalList')).default,
+        }),
+      },
+       {
+        path: 'volume_update/',
+        lazy: async () => ({
+          Component: (await import('./pages/volumeUpdate')).default,
+        }),
+      },
+        {
+        path: 'volume_list/',
+        lazy: async () => ({
+          Component: (await import('./pages/volumeList')).default,
+        }),
+      },
+        {
+        path: 'article_update/',
+        lazy: async () => ({
+          Component: (await import('./pages/articleUpdate')).default,
+        }),
+      },
+       {
+        path: 'article_list/',
+        lazy: async () => ({
+          Component: (await import('./pages/articleList')).default,
+        }),
+      },
+      {
         path: 'upload/:uploadId',
         lazy: async () => ({
           Component: (await import('./pages/uploadDetail/index')).default,
