@@ -3,6 +3,7 @@ import { Layout } from '@/components/custom/layout'
 import React, { useState, useEffect, useContext } from 'react'
 import AuthContext from '../../AuthContext'
 import { BASE_URL } from '../../config'
+import { useNavigate } from 'react-router-dom'
 
 
 interface Platform {
@@ -23,12 +24,13 @@ interface ThematicArea {
 }
 
 const journalUpdate = () => {
+ const navigate = useNavigate()
  const authContext = useContext(AuthContext)
   if (!authContext) {
     return <div> Loading...</div>
   }
   
-  const { user,refreshToken } = authContext
+  const { user } = authContext
   console.log("user-",user)
   
 
@@ -132,6 +134,8 @@ const journalUpdate = () => {
         console.log('Success:', result)
         alert('Journal Added Successfully')
         setFormData(initialFormData)
+        // ✅ Navigate to desired URL after success
+        navigate('/journal_list')
       } else {
         console.error('Error:', response.statusText)
         alert('OOps! An Error occured try again later')

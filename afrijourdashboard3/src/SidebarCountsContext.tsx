@@ -1,5 +1,5 @@
 // contexts/SidebarCountsContext.tsx
-import React, { createContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useEffect, useState, ReactNode } from 'react'
 // import { BASE_URL } from '../config'
 import { BASE_URL } from './config'
 interface Counts {

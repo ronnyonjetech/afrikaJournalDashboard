@@ -42,7 +42,7 @@ export default function Upload() {
     return <div> Loading...</div>
   }
   
-  const { user,refreshToken } = authContext
+  const { user } = authContext
   console.log("user-",user)
   
   
@@ -54,16 +54,16 @@ export default function Upload() {
   //   }
   // }
 
-  const handleRefresh = async () => {
-  try {
-    const result = await refreshToken()
-    console.log('Refreshed token result:', result)
-    alert('Token refreshed successfully')
-  } catch (error) {
-    console.error('Failed to refresh token:', error)
-    alert('Failed to refresh token')
-  }
-}
+//   const handleRefresh = async () => {
+//   try {
+//     const result = await refreshToken()
+//     console.log('Refreshed token result:', result)
+//     alert('Token refreshed successfully')
+//   } catch (error) {
+//     console.error('Failed to refresh token:', error)
+//     alert('Failed to refresh token')
+//   }
+// }
   // useEffect(() => {
   //   const checkTokens = async () => {
   //     try {
@@ -493,8 +493,8 @@ export default function Upload() {
 
           <div className='mt-6'>{renderTabContent()}</div>
         </div>
-        <h1>Welcome Back</h1>
-        <button onClick={handleRefresh}>Test Refresh Token</button>
+        {/* <h1>Welcome Back</h1>
+        <button onClick={handleRefresh}>Test Refresh Token</button> */}
 
       </Layout.Body>
     </Layout>

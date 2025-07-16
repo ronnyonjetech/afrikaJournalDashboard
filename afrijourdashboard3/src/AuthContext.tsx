@@ -1,6 +1,189 @@
-import { createContext, useState, ReactNode } from 'react'
+// import { createContext, useState, ReactNode } from 'react'
+// import { jwtDecode } from 'jwt-decode'
+// import { BASE_URL } from './config'
+// interface AuthContextType {
+//   user: any
+//   loginUser: (email: string, password: string) => Promise<void>
+//   logoutUser: () => void
+//   registerUser: (
+//     email: string,
+//     user_name: string,
+//     password: string
+//   ) => Promise<void>
+//   resetPassword: (email: string) => Promise<void>
+//   // updateTokensIfNeeded: () => void
+//   refreshToken: () => Promise<any>
+// }
+
+// interface AuthProviderProps {
+//   children: ReactNode
+// }
+
+// const AuthContext = createContext<AuthContextType | null>(null)
+
+// export default AuthContext
+
+// export const AuthProvider = ({ children }: AuthProviderProps) => {
+//   const [authTokens, setAuthTokens] = useState<any>(() =>
+//     localStorage.getItem('authTokens')
+//       ? JSON.parse(localStorage.getItem('authTokens')!)
+//       : null
+//   )
+//   const [user, setUser] = useState<any>(() =>
+//     localStorage.getItem('authTokens')
+//       ? jwtDecode(localStorage.getItem('authTokens')!)
+//       : null
+//   )
+//   const [loading, setLoading] = useState(true)
+
+//   const refreshToken = async (): Promise<{
+//     access: string
+//     refresh: string
+//   } | null> => {
+//     const storedTokens = localStorage.getItem('authTokens')
+
+//     if (!storedTokens) {
+//       console.error('No tokens found in localStorage')
+//       return null
+//     }
+
+//     const parsedTokens = JSON.parse(storedTokens)
+//     const refresh = parsedTokens?.refresh
+
+//     if (!refresh) {
+//       console.error('No refresh token found in stored tokens')
+//       return null
+//     }
+
+//     try {
+//       const response = await fetch(
+//         'https://backend.afrikajournals.org/api/token/refresh',
+//         {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//           },
+//           body: JSON.stringify({ refresh }),
+//         }
+//       )
+
+//       if (response.ok) {
+//         const data = await response.json()
+//         console.log('✅ Old tokens:', storedTokens)
+//         console.log('✅ New tokens:', data)
+
+//         localStorage.setItem('authTokens', JSON.stringify(data)) // Optional: update stored tokens
+//         return data
+//       } else {
+//         const errorData = await response.json()
+//         console.error('❌ Failed to refresh token:', errorData)
+//         return null
+//       }
+//     } catch (error) {
+//       console.error('❌ Error refreshing token:', error)
+//       return null
+//     }
+//   }
+
+//   const loginUser = async (email: string, password: string) => {
+//     try {
+//       const response = await fetch(`${BASE_URL}/api/token/`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email, password }),
+//       })
+
+//       const data = await response.json()
+//       console.log(loading)
+//       // console.log(authTokens)
+//       if (response.ok) {
+//         setAuthTokens(data)
+//         setUser(jwtDecode(data.access))
+//         localStorage.setItem('authTokens', JSON.stringify(data))
+//         window.location.href = '/upload' // Redirect to upload page
+//       } else {
+//         alert('Login failed. Please check your credentials.')
+//       }
+//     } catch (error) {
+//       console.error('Error:', error)
+//     } finally {
+//       setLoading(false)
+//     }
+//   }
+
+//   const registerUser = async (
+//     email: string,
+//     user_name: string,
+//     password: string
+//   ) => {
+//     try {
+//       const response = await fetch(`${BASE_URL}/api/register/`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email, user_name, password }),
+//       })
+
+//       if (response.ok) {
+//         window.location.href = '/sign-in' // Redirect to sign-in on successful registration
+//       } else {
+//         alert('Registration failed.')
+//       }
+//     } catch (error) {
+//       console.error('Error:', error)
+//     }
+//   }
+
+//   const resetPassword = async (email: string) => {
+//     try {
+//       const response = await fetch(`${BASE_URL}/api/reset_password/`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email }),
+//       })
+
+//       if (response.ok) {
+//         alert('Check your email for the password reset link.')
+//       } else {
+//         alert('Password reset failed.')
+//       }
+//     } catch (error) {
+//       console.error('Error:', error)
+//     }
+//   }
+
+//   const logoutUser = () => {
+//     setAuthTokens(null)
+//     setUser(null)
+//     localStorage.removeItem('authTokens')
+//     window.location.href = '/sign-in' // Redirect to sign-in on logout
+//   }
+
+//   const contextData: AuthContextType = {
+//     user,
+//     loginUser,
+//     logoutUser,
+//     registerUser,
+//     resetPassword,
+//     refreshToken,
+//   }
+
+//   return (
+//     <AuthContext.Provider value={contextData}>
+//       {/* {!loading && children} */}
+//       {children}
+//     </AuthContext.Provider>
+//   )
+// }
+import { createContext, useState, useEffect, ReactNode } from 'react'
 import { jwtDecode } from 'jwt-decode'
 import { BASE_URL } from './config'
+
 interface AuthContextType {
   user: any
   loginUser: (email: string, password: string) => Promise<void>
@@ -11,8 +194,6 @@ interface AuthContextType {
     password: string
   ) => Promise<void>
   resetPassword: (email: string) => Promise<void>
-  // updateTokensIfNeeded: () => void
-  refreshToken: () => Promise<any>
 }
 
 interface AuthProviderProps {
@@ -20,7 +201,6 @@ interface AuthProviderProps {
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
-
 export default AuthContext
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -31,78 +211,112 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   )
   const [user, setUser] = useState<any>(() =>
     localStorage.getItem('authTokens')
-      ? jwtDecode(localStorage.getItem('authTokens')!)
+      ? jwtDecode(JSON.parse(localStorage.getItem('authTokens')!).access)
       : null
   )
   const [loading, setLoading] = useState(true)
 
-  const refreshToken = async (): Promise<{
-    access: string
-    refresh: string
-  } | null> => {
-    const storedTokens = localStorage.getItem('authTokens')
-
-    if (!storedTokens) {
-      console.error('No tokens found in localStorage')
-      return null
+  // ✅ Token expiry check function
+  const isTokenExpired = (token: string) => {
+    try {
+      const decoded: any = jwtDecode(token)
+      const now = Date.now() / 1000
+      return decoded.exp < now
+    } catch (error) {
+      console.error('Error decoding token:', error)
+      return true
     }
+  }
 
-    const parsedTokens = JSON.parse(storedTokens)
-    const refresh = parsedTokens?.refresh
-
-    if (!refresh) {
-      console.error('No refresh token found in stored tokens')
-      return null
+  // ✅ Refresh token function
+  const refreshToken = async () => {
+    console.log('🔄 Running refreshToken function...')
+    if (!authTokens?.refresh) {
+      console.log('⛔ No refresh token found')
+      logoutUser()
+      return
     }
 
     try {
-      const response = await fetch(
-        'https://backend.afrikajournals.org/api/token/refresh',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ refresh }),
-        }
-      )
+      const response = await fetch(`${BASE_URL}/api/token/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh: authTokens.refresh }),
+      })
 
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ Old tokens:', storedTokens)
-        console.log('✅ New tokens:', data)
-
-        localStorage.setItem('authTokens', JSON.stringify(data)) // Optional: update stored tokens
-        return data
+        console.log('✅ Tokens refreshed:', data)
+        setAuthTokens(data)
+        setUser(jwtDecode(data.access))
+        localStorage.setItem('authTokens', JSON.stringify(data))
       } else {
-        const errorData = await response.json()
-        console.error('❌ Failed to refresh token:', errorData)
-        return null
+        console.error('❌ Failed to refresh token. Logging out.')
+        logoutUser()
       }
     } catch (error) {
       console.error('❌ Error refreshing token:', error)
-      return null
+      logoutUser()
+    } finally {
+      setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (!authTokens) {
+      console.log('⛔ No tokens found.')
+
+      setLoading(false) // ✅ ensure loading ends
+
+      // ✅ Avoid infinite redirect loop
+      if (window.location.pathname !== '/sign-in') {
+        console.log('Redirecting to login...')
+        logoutUser()
+      }
+
+      return
+    }
+
+    const expired = isTokenExpired(authTokens.access)
+    if (expired) {
+      console.log('🔔 Access token expired. Refreshing...')
+      refreshToken()
+    } else {
+      console.log('✅ Access token valid.')
+      setUser(jwtDecode(authTokens.access))
+      setLoading(false)
+    }
+  }, [authTokens])
+
+  // ✅ NEW useEffect for periodic refresh
+  useEffect(() => {
+    if (!authTokens) return
+
+    const interval = setInterval(
+      () => {
+        console.log('🔄 Refreshing token periodically...')
+        refreshToken()
+      },
+      1000 * 60 * 4
+    ) // every 4 minutes (adjust based on token expiry time)
+
+    return () => clearInterval(interval) // cleanup on unmount
+  }, [authTokens])
 
   const loginUser = async (email: string, password: string) => {
     try {
       const response = await fetch(`${BASE_URL}/api/token/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
 
       const data = await response.json()
-      console.log(loading)
-      // console.log(authTokens)
       if (response.ok) {
         setAuthTokens(data)
         setUser(jwtDecode(data.access))
         localStorage.setItem('authTokens', JSON.stringify(data))
-        window.location.href = '/upload' // Redirect to upload page
+        window.location.href = '/'
       } else {
         alert('Login failed. Please check your credentials.')
       }
@@ -121,14 +335,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await fetch(`${BASE_URL}/api/register/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, user_name, password }),
       })
 
       if (response.ok) {
-        window.location.href = '/sign-in' // Redirect to sign-in on successful registration
+        window.location.href = '/sign-in'
       } else {
         alert('Registration failed.')
       }
@@ -141,9 +353,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await fetch(`${BASE_URL}/api/reset_password/`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       })
 
@@ -161,7 +371,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setAuthTokens(null)
     setUser(null)
     localStorage.removeItem('authTokens')
-    window.location.href = '/sign-in' // Redirect to sign-in on logout
+    window.location.href = '/sign-in'
   }
 
   const contextData: AuthContextType = {
@@ -170,13 +380,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logoutUser,
     registerUser,
     resetPassword,
-    refreshToken,
   }
 
   return (
     <AuthContext.Provider value={contextData}>
-      {/* {!loading && children} */}
-      {children}
+      {loading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   )
 }

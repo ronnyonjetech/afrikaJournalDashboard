@@ -4,7 +4,6 @@ import NotFoundError from './pages/errors/not-found-error'
 import MaintenanceError from './pages/errors/maintenance-error'
 import UnauthorisedError from './pages/errors/unauthorised-error.tsx'
 
-
 const router = createBrowserRouter([
   // Auth routes
   {
@@ -56,14 +55,29 @@ const router = createBrowserRouter([
       {
         index: true,
         lazy: async () => ({
-          Component: (await import('./pages/home')).default,
-        }),
-      },
-      {
-        path: 'dashboard',
-        lazy: async () => ({
+          // Component: (await import('./pages/home')).default,
           Component: (await import('./pages/dashboard')).default,
         }),
+      },
+      // {
+      //   path: '/',
+      //   lazy: async () => ({
+      //     Component: (await import('./pages/dashboard')).default,
+      //   }),
+      // },
+      {
+        path: '/',
+        lazy: async () => {
+          const Dashboard = (await import('./pages/dashboard')).default
+          const ProtectedRoute = (await import('./ProtectedRoute')).default
+          return {
+            Component: (props: any) => (
+              <ProtectedRoute>
+                <Dashboard {...props} />
+              </ProtectedRoute>
+            ),
+          }
+        },
       },
       {
         path: 'tasks',
@@ -116,15 +130,15 @@ const router = createBrowserRouter([
       {
         path: 'upload',
         lazy: async () => {
-          const Upload = (await import('./pages/upload')).default;
-          const ProtectedRoute = (await import('./ProtectedRoute')).default;
+          const Upload = (await import('./pages/upload')).default
+          const ProtectedRoute = (await import('./ProtectedRoute')).default
           return {
             Component: (props: any) => (
               <ProtectedRoute>
                 <Upload {...props} />
               </ProtectedRoute>
             ),
-          };
+          }
         },
       },
       {
@@ -139,42 +153,42 @@ const router = createBrowserRouter([
           Component: (await import('./pages/journalUpdate')).default,
         }),
       },
-       {
+      {
         path: 'journal_list/',
         lazy: async () => ({
           Component: (await import('./pages/journalList')).default,
         }),
       },
-       {
+      {
         path: 'volume_update/',
         lazy: async () => ({
           Component: (await import('./pages/volumeUpdate')).default,
         }),
       },
-        {
+      {
         path: 'volume_list/',
         lazy: async () => ({
           Component: (await import('./pages/volumeList')).default,
         }),
       },
-        {
+      {
         path: 'article_update/',
         lazy: async () => ({
           Component: (await import('./pages/articleUpdate')).default,
         }),
       },
-       {
+      {
         path: 'article_list/',
         lazy: async () => ({
           Component: (await import('./pages/articleList')).default,
         }),
       },
-      {
-        path: 'upload/:uploadId',
-        lazy: async () => ({
-          Component: (await import('./pages/uploadDetail/index')).default,
-        }),
-      },
+      // {
+      //   path: 'upload/:uploadId',
+      //   lazy: async () => ({
+      //     Component: (await import('./pages/uploadDetail/index')).default,
+      //   }),
+      // },
       {
         path: 'indexes',
         lazy: async () => ({
