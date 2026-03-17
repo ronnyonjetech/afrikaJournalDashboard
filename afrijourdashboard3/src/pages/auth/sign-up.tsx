@@ -1,14 +1,14 @@
 import { Card } from '@/components/ui/card'
 import { SignUpForm } from './components/sign-up-form'
 import { Link } from 'react-router-dom'
-
+import ViteLogo from '@/assets/logo.png'
 export default function SignUp() {
   return (
     <>
       <div className='container grid h-svh flex-col items-center justify-center bg-primary-foreground lg:max-w-none lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
           <div className='mb-4 flex items-center justify-center'>
-            <svg
+            {/* <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
               fill='none'
@@ -19,8 +19,22 @@ export default function SignUp() {
               className='mr-2 h-6 w-6'
             >
               <path d='M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3' />
-            </svg>
-            <h1 className='text-xl font-medium'>Afrijour</h1>
+            </svg> */}
+            {/* <img
+            src={ViteLogo}
+            className='relative m-auto'
+            width={301}
+            height={60}
+            alt='Vite'
+          /> */}
+            <img
+              src={ViteLogo}
+              className='relative m-auto'
+              width={150}
+              height={30}
+              alt='Vite'
+            />
+            {/* <h1 className='text-xl font-medium'>Afrikajournals</h1> */}
           </div>
           <Card className='p-6'>
             <div className='mb-2 flex flex-col space-y-2 text-left'>
