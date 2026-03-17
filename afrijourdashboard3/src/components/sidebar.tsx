@@ -117,17 +117,17 @@
 //   );
 // }
 
-import { useEffect, useState } from 'react';
-import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
-import { Layout } from './custom/layout';
-import { Button } from './custom/button';
-import Nav from './nav';
-import { cn } from '@/lib/utils';
-import { getSideLinks, fetchUserCounts, SideLink } from '@/data/sidelinks';
+import { useEffect, useState } from 'react'
+import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
+import { Layout } from './custom/layout'
+import { Button } from './custom/button'
+import Nav from './nav'
+import { cn } from '@/lib/utils'
+import { getSideLinks, fetchUserCounts, SideLink } from '@/data/sidelinks'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
-  isCollapsed: boolean;
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  isCollapsed: boolean
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function Sidebar({
@@ -135,33 +135,33 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
-  const [navOpened, setNavOpened] = useState(false);
-  const [links, setLinks] = useState<SideLink[]>([]);
+  const [navOpened, setNavOpened] = useState(false)
+  const [links, setLinks] = useState<SideLink[]>([])
 
   /* Fetch counts and build sidebar links on mount */
   useEffect(() => {
     const loadCounts = async () => {
-      const counts = await fetchUserCounts();
-      const builtLinks = getSideLinks(counts);
-      setLinks(builtLinks);
-    };
+      const counts = await fetchUserCounts()
+      const builtLinks = getSideLinks(counts)
+      setLinks(builtLinks)
+    }
 
-    loadCounts();
-  }, []);
+    loadCounts()
+  }, [])
 
   /* Make body not scrollable when navBar is opened */
   useEffect(() => {
     if (navOpened) {
-      document.body.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden')
     } else {
-      document.body.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden')
     }
-  }, [navOpened]);
+  }, [navOpened])
 
   return (
     <aside
       className={cn(
-        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted transition-[width] bg-sky-200 md:bottom-0 md:right-auto md:h-svh ${
+        `fixed left-0 right-0 top-0 z-50 w-full border-r-2 border-r-muted bg-sky-200 transition-[width] md:bottom-0 md:right-auto md:h-svh ${
           isCollapsed ? 'md:w-14' : 'md:w-64'
         }`,
         className
@@ -177,15 +177,20 @@ export default function Sidebar({
 
       <Layout className={navOpened ? 'h-svh' : ''}>
         {/* Header */}
-        <Layout.Header className="z-50 flex justify-between px-4 py-3 shadow-sm md:px-4">
+        <Layout.Header className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'>
           <a
-            href="https://afrijour-landing-page.web.app/"
+            href='https://afrikajournals.org/'
             className={`flex items-center ${!isCollapsed ? 'gap-4' : ''}`}
           >
-            <img
-              src="/images/logo.svg"
-              alt="Afrijour Logo"
+            {/* <img
+              src="logo.png"
+              alt="Afrikajournals Logo"
               className="h-12 md:h-16 lg:h-20 object-contain cursor-pointer hover:scale-105 transition-transform"
+            /> */}
+            <img
+              src='logo.png'
+              alt='Afrikajournals Logo'
+              className='h-8 cursor-pointer object-contain transition-transform hover:scale-105 md:h-10 lg:h-12'
             />
             <div
               className={`flex items-center truncate ${
@@ -196,11 +201,11 @@ export default function Sidebar({
 
           {/* Toggle Button in mobile */}
           <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            aria-label="Toggle Navigation"
-            aria-controls="sidebar-menu"
+            variant='ghost'
+            size='icon'
+            className='md:hidden'
+            aria-label='Toggle Navigation'
+            aria-controls='sidebar-menu'
             aria-expanded={navOpened}
             onClick={() => setNavOpened((prev) => !prev)}
           >
@@ -210,8 +215,8 @@ export default function Sidebar({
 
         {/* Navigation links */}
         <Nav
-          id="sidebar-menu"
-          className={`z-40 h-full flex-1 overflow-auto space-y-6 ${
+          id='sidebar-menu'
+          className={`z-40 h-full flex-1 space-y-6 overflow-auto ${
             navOpened
               ? 'max-h-screen px-6 py-4'
               : 'max-h-0 py-0 md:max-h-screen md:px-6 md:py-4'
@@ -224,9 +229,9 @@ export default function Sidebar({
         {/* Scrollbar width toggle button */}
         <Button
           onClick={() => setIsCollapsed((prev) => !prev)}
-          size="icon"
-          variant="outline"
-          className="absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex"
+          size='icon'
+          variant='outline'
+          className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
         >
           <IconChevronsLeft
             stroke={1.5}
@@ -235,5 +240,5 @@ export default function Sidebar({
         </Button>
       </Layout>
     </aside>
-  );
+  )
 }

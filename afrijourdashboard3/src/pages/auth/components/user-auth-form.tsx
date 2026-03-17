@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/custom/button'
 import { PasswordInput } from '@/components/custom/password-input'
 import { cn } from '@/lib/utils'
-import {useContext} from 'react'
+import { useContext } from 'react'
 import AuthContext from '../../../AuthContext'
 
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
@@ -40,16 +40,16 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   // let {loginUser}=useContext(AuthContext)
   //let{user}=useContext(AuthContext)
-  const authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext)
 
   if (!authContext) {
     // Handle the case where AuthContext is null (e.g., render a fallback UI or show a loading state)
-    return <div> Loading...</div>;
+    return <div> Loading...</div>
   }
 
   // Now it's safe to access loginUser method from authContext
-  const { loginUser } = authContext;
-  
+  const { loginUser } = authContext
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,9 +61,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
     //console.log(loginUser())
-     // Use the loginUser function from the AuthContext
-    loginUser(data.email,data.password);
-   
+    // Use the loginUser function from the AuthContext
+    loginUser(data.email, data.password)
+
     console.log(data.email)
     console.log(data.password)
 
@@ -73,10 +73,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    
     <div className={cn('grid gap-6', className)} {...props}>
       {/* {user && <p>Hello {user.username}</p>} */}
-      <Form {...form} >
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className='grid gap-2'>
             <FormField
@@ -112,8 +111,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
-            />                                                                                                                                                                                                          
-            <Button className='mt-2' loading={isLoading}>
+            />
+            {/* <Button className='mt-2' loading={isLoading}>
+              Login
+            </Button> */}
+            <Button
+              className='mt-2 bg-emerald-600 text-white hover:bg-emerald-700'
+              loading={isLoading}
+            >
               Login
             </Button>
 
