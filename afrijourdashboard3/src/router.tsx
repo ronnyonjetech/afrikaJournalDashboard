@@ -183,6 +183,12 @@ const router = createBrowserRouter([
           Component: (await import('./pages/articleList')).default,
         }),
       },
+      {
+        path: 'approvals/',
+        lazy: async () => ({
+          Component: (await import('./pages/approvalList')).default,
+        }),
+      },
       // {
       //   path: 'upload/:uploadId',
       //   lazy: async () => ({

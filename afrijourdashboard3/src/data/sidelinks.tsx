@@ -124,12 +124,13 @@
 
 
 import {
+  // IconMessages,
   IconLayoutDashboard,
   IconNotebook,
   IconCloudUp,
   IconLogs,
   IconFileDescription,
-  IconColumns3,
+  IconColumns3,IconShieldCheck
 } from '@tabler/icons-react';
 import { BASE_URL } from '../config';
 
@@ -149,6 +150,21 @@ const getAuthTokens = (): { access: string; refresh: string } | null => {
   const tokens = localStorage.getItem('authTokens');
   return tokens ? JSON.parse(tokens) : null;
 };
+
+// ✅ Decode JWT and check is_staff
+export const isStaffUser = (): boolean => {
+  const tokens = localStorage.getItem('authTokens');
+  if (!tokens) return false;
+  const access = JSON.parse(tokens)?.access;
+  if (!access) return false;
+  try {
+    const payload = JSON.parse(atob(access.split('.')[1]));
+    return payload?.is_staff === true;
+  } catch {
+    return false;
+  }
+};
+
 
 // ✅ Fetch user counts from API
 export const fetchUserCounts = async () => {
@@ -187,71 +203,164 @@ export const fetchUserCounts = async () => {
 };
 
 // ✅ Build sidelinks dynamically with counts
-export const getSideLinks = (counts: { journals: number; volumes: number; articles: number }): SideLink[] => [
-  {
-    title: 'Dashboard',
-    label: '',
-    href: '/',
-    icon: <IconLayoutDashboard size={18} />,
-  },
-  {
-    title: 'Journals',
-    label: counts.journals.toString(),
-    href: '',
-    icon: <IconNotebook size={18} />,
-    sub: [
-      {
-        title: 'Add Journal Description',
-        label: '',
-        href: '/journal_update',
-        icon: <IconFileDescription size={18} />,
-      },
-      {
-        title: 'Journal List',
-        label: '',
-        href: '/journal_list',
-        icon: <IconLogs size={18} />,
-      },
-    ],
-  },
-  {
-    title: 'Volumes',
-    label: counts.volumes.toString(),
-    href: '',
-    icon: <IconColumns3 size={18} />,
-    sub: [
-      {
-        title: 'Add Volumes To Journals',
-        label: '',
-        href: '/volume_update',
-        icon: <IconFileDescription size={18} />,
-      },
-      {
-        title: 'Volumes List',
-        label: '',
-        href: '/volume_list',
-        icon: <IconLogs size={18} />,
-      },
-    ],
-  },
-  {
-    title: 'Articles',
-    label: counts.articles.toString(),
-    href: '',
-    icon: <IconFileDescription size={18} />,
-    sub: [
-      {
-        title: 'Upload Articles',
-        label: '',
-        href: '/article_update',
-        icon: <IconCloudUp size={18} />,
-      },
-      {
-        title: 'Article List',
-        label: '',
-        href: '/article_list',
-        icon: <IconLogs size={18} />,
-      },
-    ],
-  },
-];
+// export const getSideLinks = (counts: { journals: number; volumes: number; articles: number }): SideLink[] => [
+  
+//   {
+//     title: 'Dashboard',
+//     label: '',
+//     href: '/',
+//     icon: <IconLayoutDashboard size={18} />,
+//   },
+//   {
+//     title: 'Journals',
+//     label: counts.journals.toString(),
+//     href: '',
+//     icon: <IconNotebook size={18} />,
+//     sub: [
+//       {
+//         title: 'Add Journal Description',
+//         label: '',
+//         href: '/journal_update',
+//         icon: <IconFileDescription size={18} />,
+//       },
+//       {
+//         title: 'Journal List',
+//         label: '',
+//         href: '/journal_list',
+//         icon: <IconLogs size={18} />,
+//       },
+//     ],
+//   },
+//   {
+//     title: 'Volumes',
+//     label: counts.volumes.toString(),
+//     href: '',
+//     icon: <IconColumns3 size={18} />,
+//     sub: [
+//       {
+//         title: 'Add Volumes To Journals',
+//         label: '',
+//         href: '/volume_update',
+//         icon: <IconFileDescription size={18} />,
+//       },
+//       {
+//         title: 'Volumes List',
+//         label: '',
+//         href: '/volume_list',
+//         icon: <IconLogs size={18} />,
+//       },
+//     ],
+//   },
+//   {
+//     title: 'Articles',
+//     label: counts.articles.toString(),
+//     href: '',
+//     icon: <IconFileDescription size={18} />,
+//     sub: [
+//       {
+//         title: 'Upload Articles',
+//         label: '',
+//         href: '/article_update',
+//         icon: <IconCloudUp size={18} />,
+//       },
+//       {
+//         title: 'Article List',
+//         label: '',
+//         href: '/article_list',
+//         icon: <IconLogs size={18} />,
+//       },
+//     ],
+//   },
+//   {
+//     title: 'Approvals',
+//     label: '',
+//     href: '/approvals',
+//     icon: <IconMessages size={18} />,
+//   }
+
+// ];
+
+
+export const getSideLinks = (counts: { journals: number; volumes: number; articles: number }): SideLink[] => {
+  const isStaff = isStaffUser();
+
+  const links: SideLink[] = [
+    {
+      title: 'Dashboard',
+      label: '',
+      href: '/',
+      icon: <IconLayoutDashboard size={18} />,
+    },
+    {
+      title: 'Journals',
+      label: counts.journals.toString(),
+      href: '',
+      icon: <IconNotebook size={18} />,
+      sub: [
+        {
+          title: 'Add Journal Description',
+          label: '',
+          href: '/journal_update',
+          icon: <IconFileDescription size={18} />,
+        },
+        {
+          title: 'Journal List',
+          label: '',
+          href: '/journal_list',
+          icon: <IconLogs size={18} />,
+        },
+      ],
+    },
+    {
+      title: 'Volumes',
+      label: counts.volumes.toString(),
+      href: '',
+      icon: <IconColumns3 size={18} />,
+      sub: [
+        {
+          title: 'Add Volumes To Journals',
+          label: '',
+          href: '/volume_update',
+          icon: <IconFileDescription size={18} />,
+        },
+        {
+          title: 'Volumes List',
+          label: '',
+          href: '/volume_list',
+          icon: <IconLogs size={18} />,
+        },
+      ],
+    },
+    {
+      title: 'Articles',
+      label: counts.articles.toString(),
+      href: '',
+      icon: <IconFileDescription size={18} />,
+      sub: [
+        {
+          title: 'Upload Articles',
+          label: '',
+          href: '/article_update',
+          icon: <IconCloudUp size={18} />,
+        },
+        {
+          title: 'Article List',
+          label: '',
+          href: '/article_list',
+          icon: <IconLogs size={18} />,
+        },
+      ],
+    },
+  ];
+
+  if (isStaff) {
+    links.push({
+      title: 'Approvals',
+      label: '',
+      href: '/approvals',
+      icon: <IconShieldCheck size={18} />,
+    });
+  }
+
+  return links;
+};

@@ -209,6 +209,7 @@ import {
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { BASE_URL } from '../../config'
 import './index.css'
+import { MdNextPlan } from "react-icons/md";
 interface Language {
   id: number
   language: string
@@ -518,13 +519,27 @@ const JournalList = () => {
               >
                 <div className='absolute right-4 top-4 flex space-x-2'>
                   <Link to={`/volume_update`}>
-                    <button
+                    {/* <button
+                      type='button'
+                      className='flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400'
+                    >
+                      <FaPen className='h-4 w-4 text-yellow-600' />
+                    </button> */}
+
+                     <button
+                      type='button'
+                      className='flex h-8 w-8 items-center justify-center rounded-full bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-400'
+                    >
+                      {/* <FaPen className='h-4 w-4 text-yellow-600' /> */}
+                      <MdNextPlan className='h-4 w-4 text-green-600' />
+                    </button>
+                  </Link>
+                   <button
                       type='button'
                       className='flex h-8 w-8 items-center justify-center rounded-full bg-yellow-100 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400'
                     >
                       <FaPen className='h-4 w-4 text-yellow-600' />
                     </button>
-                  </Link>
                   <button
                     type='button'
                     onClick={() => handleDelete(journal.id)}
@@ -532,6 +547,7 @@ const JournalList = () => {
                   >
                     <FaTrash className='h-4 w-4 text-red-600' />
                   </button>
+                  
                 </div>
 
                 <CardHeader className='mb-3 space-y-1 text-center'>
