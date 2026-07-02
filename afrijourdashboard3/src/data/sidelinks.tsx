@@ -1,8 +1,8 @@
 // import {
 //   // IconChartHistogram,
 //   IconLayoutDashboard,
-//   // IconSettings,
-//   // IconBook,
+//   IconSettings,
+//   IconBook,
 //   // IconMessages,
 //   // IconNews,
 //   // IconHome,
@@ -38,66 +38,66 @@
 //     href: '/',
 //     icon: <IconLayoutDashboard size={18} />,
 //   },
-//   {
-//     title: 'Journals',
-//     label: '10',
-//     href: '',
-//     icon: <IconNotebook size={18} />,
-//     sub: [
-//       {
-//         title: 'Add Journal Description',
-//         label: '',
-//         href: '/journal_update',
-//         icon: <IconFileDescription size={18} />,
-//       },
-//       {
-//         title: 'Journal List',
-//         label: '',
-//         href: '/journal_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Volumes',
-//     label: '10',
-//     href: '',
-//     icon: <IconColumns3 size={18} />,
-//     sub: [
-//       {
-//         title: 'Add Volumes To Journals',
-//         label: '',
-//         href: '/volume_update',
-//         icon: <IconFileDescription size={18} />,
-//       },
-//       {
-//         title: 'Volumes List',
-//         label: '',
-//         href: '/volume_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Articles',
-//     label: '10',
-//     href: '',
-//     icon: <IconFileDescription size={18} />,
-//     sub: [
-//       {
-//         title: 'Upload Articles',
-//         label: '',
-//         href: '/article_update',
-//         icon: <IconCloudUp size={18} />,
-//       },
-//       {
-//         title: 'Article List',
-//         label: '',
-//         href: '/article_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
+//   // {
+//   //   title: 'Journals',
+//   //   label: '10',
+//   //   href: '',
+//   //   icon: <IconNotebook size={18} />,
+//   //   sub: [
+//   //     {
+//   //       title: 'Add Journal Description',
+//   //       label: '',
+//   //       href: '/journal_update',
+//   //       icon: <IconFileDescription size={18} />,
+//   //     },
+//   //     {
+//   //       title: 'Journal List',
+//   //       label: '',
+//   //       href: '/journal_list',
+//   //       icon: <IconLogs size={18} />,
+//   //     },
+//   //   ],
+//   // },
+//   // {
+//   //   title: 'Volumes',
+//   //   label: '10',
+//   //   href: '',
+//   //   icon: <IconColumns3 size={18} />,
+//   //   sub: [
+//   //     {
+//   //       title: 'Add Volumes To Journals',
+//   //       label: '',
+//   //       href: '/volume_update',
+//   //       icon: <IconFileDescription size={18} />,
+//   //     },
+//   //     {
+//   //       title: 'Volumes List',
+//   //       label: '',
+//   //       href: '/volume_list',
+//   //       icon: <IconLogs size={18} />,
+//   //     },
+//   //   ],
+//   // },
+//   // {
+//   //   title: 'Articles',
+//   //   label: '10',
+//   //   href: '',
+//   //   icon: <IconFileDescription size={18} />,
+//   //   sub: [
+//   //     {
+//   //       title: 'Upload Articles',
+//   //       label: '',
+//   //       href: '/article_update',
+//   //       icon: <IconCloudUp size={18} />,
+//   //     },
+//   //     {
+//   //       title: 'Article List',
+//   //       label: '',
+//   //       href: '/article_list',
+//   //       icon: <IconLogs size={18} />,
+//   //     },
+//   //   ],
+//   // },
 
 //   // {
 //   //   title: 'Journal & Article Manager',
@@ -113,254 +113,153 @@
 //   //   icon: <IconMessages size={18} />,
 //   // },
 
-//   // {
-//   //   title: 'Settings',
-//   //   label: '',
-//   //   href: '/settings',
-//   //   icon: <IconSettings size={18} />,
-//   // },
+//   {
+//     title: 'Submit Manuscripts',
+//     label: '',
+//     href: '/submit_manuscripts',
+//     icon: < IconCloudUp size={18} />,
+//   },
+//   {
+//     title: 'My Manuscripts',
+//     label: '',
+//     href: '/my_manuscripts',
+//     icon: <IconBook size={18} />,
+//   },
+//   {
+//     title: 'Reviewers Queue',
+//     label: '',
+//     href: '/reviewers_list',
+//     icon: <IconBook size={18} />,
+//   },
+//   {
+//     title: 'Submit Reviews',
+//     label: '',
+//     href: '/submit_reviews',
+//     icon: <IconBook size={18} />,
+//   },
+//   {
+//     title: 'Editors Queue',
+//     label: '',
+//     href: '/editors_list',
+//     icon: <IconBook size={18} />,
+//   },
+//   {
+//     title: 'Editors Manuscript',
+//     label: '',
+//     href: '/editors_manuscript',
+//     icon: <IconBook size={18} />,
+//   },
+//   {
+//     title: 'Editors Decision',
+//     label: '',
+//     href: '/editors_decision',
+//     icon: <IconBook size={18} />,
+//   },
 // ]
 
 
 
 import {
-  // IconMessages,
-  IconLayoutDashboard,
-  IconNotebook,
+  // IconLayoutDashboard,
+  IconBook,
   IconCloudUp,
   IconLogs,
   IconFileDescription,
-  IconColumns3,IconShieldCheck
-} from '@tabler/icons-react';
-import { BASE_URL } from '../config';
+} from '@tabler/icons-react'
 
 export interface NavLink {
-  title: string;
-  label?: string;
-  href: string;
-  icon: JSX.Element;
+  title: string
+  label?: string
+  href: string
+  icon: JSX.Element
 }
 
 export interface SideLink extends NavLink {
-  sub?: NavLink[];
+  sub?: NavLink[]
 }
 
-// ✅ Helper to get auth tokens
-const getAuthTokens = (): { access: string; refresh: string } | null => {
-  const tokens = localStorage.getItem('authTokens');
-  return tokens ? JSON.parse(tokens) : null;
-};
+const getUserRoles = (): string[] => {
+  const tokens = localStorage.getItem('authTokens')
+  if (!tokens) return []
 
-// ✅ Decode JWT and check is_staff
-export const isStaffUser = (): boolean => {
-  const tokens = localStorage.getItem('authTokens');
-  if (!tokens) return false;
-  const access = JSON.parse(tokens)?.access;
-  if (!access) return false;
   try {
-    const payload = JSON.parse(atob(access.split('.')[1]));
-    return payload?.is_staff === true;
+    const access = JSON.parse(tokens)?.access
+    if (!access) return []
+
+    const payload = JSON.parse(atob(access.split('.')[1]))
+    return payload?.roles ?? []
   } catch {
-    return false;
+    return []
   }
-};
+}
 
+export const getSideLinks = (): SideLink[] => {
+  const roles = getUserRoles()
 
-// ✅ Fetch user counts from API
-export const fetchUserCounts = async () => {
-  const authTokens = getAuthTokens();
-  const token = authTokens?.access;
-
-  if (!token) {
-    console.error('No auth token found');
-    return { journals: 0, volumes: 0, articles: 0 };
-  }
-
-  try {
-    const response = await fetch(`${BASE_URL}/journal_api/api/user-counts/`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      return {
-        journals: data.journals || 0,
-        volumes: data.volumes || 0,
-        articles: data.articles || 0,
-      };
-    } else {
-      console.error('Failed to fetch user counts:', response.status);
-      return { journals: 0, volumes: 0, articles: 0 };
-    }
-  } catch (error) {
-    console.error('Error fetching user counts:', error);
-    return { journals: 0, volumes: 0, articles: 0 };
-  }
-};
-
-// ✅ Build sidelinks dynamically with counts
-// export const getSideLinks = (counts: { journals: number; volumes: number; articles: number }): SideLink[] => [
-  
-//   {
-//     title: 'Dashboard',
-//     label: '',
-//     href: '/',
-//     icon: <IconLayoutDashboard size={18} />,
-//   },
-//   {
-//     title: 'Journals',
-//     label: counts.journals.toString(),
-//     href: '',
-//     icon: <IconNotebook size={18} />,
-//     sub: [
-//       {
-//         title: 'Add Journal Description',
-//         label: '',
-//         href: '/journal_update',
-//         icon: <IconFileDescription size={18} />,
-//       },
-//       {
-//         title: 'Journal List',
-//         label: '',
-//         href: '/journal_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Volumes',
-//     label: counts.volumes.toString(),
-//     href: '',
-//     icon: <IconColumns3 size={18} />,
-//     sub: [
-//       {
-//         title: 'Add Volumes To Journals',
-//         label: '',
-//         href: '/volume_update',
-//         icon: <IconFileDescription size={18} />,
-//       },
-//       {
-//         title: 'Volumes List',
-//         label: '',
-//         href: '/volume_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Articles',
-//     label: counts.articles.toString(),
-//     href: '',
-//     icon: <IconFileDescription size={18} />,
-//     sub: [
-//       {
-//         title: 'Upload Articles',
-//         label: '',
-//         href: '/article_update',
-//         icon: <IconCloudUp size={18} />,
-//       },
-//       {
-//         title: 'Article List',
-//         label: '',
-//         href: '/article_list',
-//         icon: <IconLogs size={18} />,
-//       },
-//     ],
-//   },
-//   {
-//     title: 'Approvals',
-//     label: '',
-//     href: '/approvals',
-//     icon: <IconMessages size={18} />,
-//   }
-
-// ];
-
-
-export const getSideLinks = (counts: { journals: number; volumes: number; articles: number }): SideLink[] => {
-  const isStaff = isStaffUser();
+  const isAuthor = roles.includes('Author')
+  const isReviewer = roles.includes('Reviewer')
+  const isEditor = roles.includes('Editor')
 
   const links: SideLink[] = [
-    {
-      title: 'Dashboard',
-      label: '',
-      href: '/',
-      icon: <IconLayoutDashboard size={18} />,
-    },
-    {
-      title: 'Journals',
-      label: counts.journals.toString(),
-      href: '',
-      icon: <IconNotebook size={18} />,
-      sub: [
-        {
-          title: 'Add Journal Description',
-          label: '',
-          href: '/journal_update',
-          icon: <IconFileDescription size={18} />,
-        },
-        {
-          title: 'Journal List',
-          label: '',
-          href: '/journal_list',
-          icon: <IconLogs size={18} />,
-        },
-      ],
-    },
-    {
-      title: 'Volumes',
-      label: counts.volumes.toString(),
-      href: '',
-      icon: <IconColumns3 size={18} />,
-      sub: [
-        {
-          title: 'Add Volumes To Journals',
-          label: '',
-          href: '/volume_update',
-          icon: <IconFileDescription size={18} />,
-        },
-        {
-          title: 'Volumes List',
-          label: '',
-          href: '/volume_list',
-          icon: <IconLogs size={18} />,
-        },
-      ],
-    },
-    {
-      title: 'Articles',
-      label: counts.articles.toString(),
-      href: '',
-      icon: <IconFileDescription size={18} />,
-      sub: [
-        {
-          title: 'Upload Articles',
-          label: '',
-          href: '/article_update',
-          icon: <IconCloudUp size={18} />,
-        },
-        {
-          title: 'Article List',
-          label: '',
-          href: '/article_list',
-          icon: <IconLogs size={18} />,
-        },
-      ],
-    },
-  ];
+    // {
+    //   title: 'Dashboard',
+    //   href: '/',
+    //   icon: <IconLayoutDashboard size={18} />,
+    // },
+  ]
 
-  if (isStaff) {
-    links.push({
-      title: 'Approvals',
-      label: '',
-      href: '/approvals',
-      icon: <IconShieldCheck size={18} />,
-    });
+  // ================= AUTHOR =================
+  if (isAuthor) {
+    links.push(
+      {
+        title: 'Submit Manuscripts',
+        href: '/submit_manuscripts',
+        icon: <IconCloudUp size={18} />,
+      },
+      {
+        title: 'My Manuscripts',
+        href: '/my_manuscripts',
+        icon: <IconBook size={18} />,
+      }
+    )
   }
 
-  return links;
-};
+  // ================= REVIEWER =================
+  if (isReviewer) {
+    links.push(
+      {
+        title: 'Reviewers Queue',
+        href: '/reviewers_list',
+        icon: <IconLogs size={18} />,
+      },
+      {
+        title: 'Submit Reviews',
+        href: '/submit_reviews',
+        icon: <IconFileDescription size={18} />,
+      }
+    )
+  }
+
+  // ================= EDITOR =================
+  if (isEditor) {
+    links.push(
+      {
+        title: 'Editors Queue',
+        href: '/editors_list',
+        icon: <IconLogs size={18} />,
+      },
+      // {
+      //   title: 'Editors Manuscripts',
+      //   href: '/editors_manuscript',
+      //   icon: <IconBook size={18} />,
+      // },
+      // {
+      //   title: 'Editors Decision',
+      //   href: '/editors_decision',
+      //   icon: <IconFileDescription size={18} />,
+      // }
+    )
+  }
+
+  return links
+}

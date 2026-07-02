@@ -52,13 +52,23 @@ const router = createBrowserRouter([
     },
     errorElement: <GeneralError />,
     children: [
+      // {
+      //   index: true,
+      //   lazy: async () => ({
+      //     // Component: (await import('./pages/home')).default,
+      //     Component: (await import('./pages/dashboard')).default,
+      //   }),
+      // },
+
       {
-        index: true,
-        lazy: async () => ({
-          // Component: (await import('./pages/home')).default,
-          Component: (await import('./pages/dashboard')).default,
-        }),
-      },
+  index: true,
+  lazy: async () => ({
+    Component: (await import('./pages/HomeRedirect')).default,
+  }),
+},
+
+
+
       // {
       //   path: '/',
       //   lazy: async () => ({
@@ -189,12 +199,65 @@ const router = createBrowserRouter([
           Component: (await import('./pages/approvalList')).default,
         }),
       },
+      {
+        path: 'submit_manuscripts/',
+        lazy: async () => ({
+          Component: (await import('./pages/submitManuscript/index.tsx')).default,
+        }),
+      },
+       {
+        path: 'my_manuscripts/',
+        lazy: async () => ({
+          Component: (await import('./pages/manuscriptsList/index.tsx')).default,
+        }),
+      },
+      {
+        path: 'reviewers_list/',
+        lazy: async () => ({
+          Component: (await import('./pages/reviewersList/index.tsx')).default,
+        }),
+      },
+      {
+        path: 'submit_reviews/',
+        lazy: async () => ({
+          Component: (await import('./pages/submitReviews/index.tsx')).default,
+        }),
+      },
+      {
+        path: 'editors_list/',
+        lazy: async () => ({
+          Component: (await import('./pages/editorsList/index.tsx')).default,
+        }),
+      },
+      // {
+      //   path: 'editors_manuscript/',
+      //   lazy: async () => ({
+      //     Component: (await import('./pages/editorsManuscript/index.tsx')).default,
+      //   }),
+      // },
+      {
+      path: 'editors_manuscript/:id',
+      lazy: async () => ({
+        Component: (
+          await import('./pages/editorsManuscript/index.tsx')
+        ).default,
+      }),
+       },
+      //  {
+      //   path: 'editors_decision/',
+      //   lazy: async () => ({
+      //     Component: (await import('./pages/editorsDecision/index.tsx')).default,
+      //   }),
+      // },
+
       // {
       //   path: 'upload/:uploadId',
       //   lazy: async () => ({
       //     Component: (await import('./pages/uploadDetail/index')).default,
       //   }),
       // },
+
+
       {
         path: 'indexes',
         lazy: async () => ({

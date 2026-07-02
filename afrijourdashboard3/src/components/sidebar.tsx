@@ -6,6 +6,7 @@
 // import { cn } from '@/lib/utils';
 // import { sidelinks } from '@/data/sidelinks';
 
+
 // interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
 //   isCollapsed: boolean;
 //   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
@@ -117,17 +118,21 @@
 //   );
 // }
 
-import { useEffect, useState } from 'react'
-import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react'
-import { Layout } from './custom/layout'
-import { Button } from './custom/button'
-import Nav from './nav'
-import { cn } from '@/lib/utils'
-import { getSideLinks, fetchUserCounts, SideLink } from '@/data/sidelinks'
+
+
+
+import { useEffect, useState } from 'react';
+import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
+import { Layout } from './custom/layout';
+import { Button } from './custom/button';
+import Nav from './nav';
+import { cn } from '@/lib/utils';
+// import { getSideLinks, SideLink } from '@/data/sidelinks';
+import { getSideLinks } from '@/data/sidelinks';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
-  isCollapsed: boolean
-  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>
+  isCollapsed: boolean;
+  setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Sidebar({
@@ -135,28 +140,18 @@ export default function Sidebar({
   isCollapsed,
   setIsCollapsed,
 }: SidebarProps) {
-  const [navOpened, setNavOpened] = useState(false)
-  const [links, setLinks] = useState<SideLink[]>([])
+  const [navOpened, setNavOpened] = useState(false);
+  // const [links, setLinks] = useState<SideLink[]>([]);
 
-  /* Fetch counts and build sidebar links on mount */
+  // lock scroll on mobile menu open
   useEffect(() => {
-    const loadCounts = async () => {
-      const counts = await fetchUserCounts()
-      const builtLinks = getSideLinks(counts)
-      setLinks(builtLinks)
-    }
+    document.body.classList.toggle('overflow-hidden', navOpened);
+  }, [navOpened]);
 
-    loadCounts()
-  }, [])
-
-  /* Make body not scrollable when navBar is opened */
-  useEffect(() => {
-    if (navOpened) {
-      document.body.classList.add('overflow-hidden')
-    } else {
-      document.body.classList.remove('overflow-hidden')
-    }
-  }, [navOpened])
+  // build role-based links once
+  // useEffect(() => {
+  //   setLinks(getSideLinks());
+  // }, []);
 
   return (
     <aside
@@ -167,78 +162,71 @@ export default function Sidebar({
         className
       )}
     >
-      {/* Overlay in mobile */}
+      {/* mobile overlay */}
       <div
         onClick={() => setNavOpened(false)}
-        className={`absolute inset-0 transition-[opacity] delay-100 duration-700 ${
-          navOpened ? 'h-svh opacity-50' : 'h-0 opacity-0'
-        } w-full bg-black md:hidden`}
+        className={`absolute inset-0 transition-opacity duration-500 ${
+          navOpened ? 'opacity-50' : 'opacity-0 pointer-events-none'
+        } bg-black md:hidden`}
       />
 
       <Layout className={navOpened ? 'h-svh' : ''}>
         {/* Header */}
-        <Layout.Header className='z-50 flex justify-between px-4 py-3 shadow-sm md:px-4'>
-          <a
-            href='https://afrikajournals.org/'
-            className={`flex items-center ${!isCollapsed ? 'gap-4' : ''}`}
-          >
-            {/* <img
-              src="logo.png"
-              alt="Afrikajournals Logo"
-              className="h-12 md:h-16 lg:h-20 object-contain cursor-pointer hover:scale-105 transition-transform"
-            /> */}
+        <Layout.Header className="flex justify-between px-4 py-3 shadow-sm">
+          <a href="/" className="flex items-center">
             <img
-              src='logo.png'
-              alt='Afrikajournals Logo'
-              className='h-8 cursor-pointer object-contain transition-transform hover:scale-105 md:h-10 lg:h-12'
+              src="logo.png"
+              alt="Logo"
+              className="h-10 object-contain"
             />
-            <div
-              className={`flex items-center truncate ${
-                isCollapsed ? 'invisible w-0' : 'visible w-auto'
-              }`}
-            ></div>
           </a>
 
-          {/* Toggle Button in mobile */}
           <Button
-            variant='ghost'
-            size='icon'
-            className='md:hidden'
-            aria-label='Toggle Navigation'
-            aria-controls='sidebar-menu'
-            aria-expanded={navOpened}
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
             onClick={() => setNavOpened((prev) => !prev)}
           >
             {navOpened ? <IconX /> : <IconMenu2 />}
           </Button>
         </Layout.Header>
 
-        {/* Navigation links */}
-        <Nav
-          id='sidebar-menu'
-          className={`z-40 h-full flex-1 space-y-6 overflow-auto ${
+        {/* NAV */}
+        {/* <Nav
+          id="sidebar-menu"
+          className={`flex-1 overflow-auto ${
             navOpened
               ? 'max-h-screen px-6 py-4'
-              : 'max-h-0 py-0 md:max-h-screen md:px-6 md:py-4'
+              : 'max-h-0 md:max-h-screen md:px-6 md:py-4'
           }`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
           links={links}
-        />
+        /> */}
+        <Nav
+  id="sidebar-menu"
+  className={`z-40 h-full flex-1 overflow-auto space-y-6 ${
+    navOpened
+      ? 'max-h-screen px-6 py-4'
+      : 'max-h-0 py-0 md:max-h-screen md:px-6 md:py-4'
+  }`}
+  closeNav={() => setNavOpened(false)}
+  isCollapsed={isCollapsed}
+  links={getSideLinks()}
+/>
 
-        {/* Scrollbar width toggle button */}
+        {/* collapse button */}
         <Button
           onClick={() => setIsCollapsed((prev) => !prev)}
-          size='icon'
-          variant='outline'
-          className='absolute -right-5 top-1/2 z-50 hidden rounded-full md:inline-flex'
+          size="icon"
+          variant="outline"
+          className="absolute -right-5 top-1/2 hidden md:inline-flex rounded-full"
         >
           <IconChevronsLeft
-            stroke={1.5}
             className={`h-5 w-5 ${isCollapsed ? 'rotate-180' : ''}`}
           />
         </Button>
       </Layout>
     </aside>
-  )
+  );
 }
